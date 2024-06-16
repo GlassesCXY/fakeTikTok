@@ -10,7 +10,6 @@ import com.qiu.apifinal.entity.dto.ResetBody;
 import com.qiu.apifinal.entity.dto.SendCodeBody;
 import com.qiu.apifinal.service.AccountService;
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,10 +23,6 @@ public class LoginController {
     @Resource
     AccountService accountService;
 
-    @GetMapping("/test")
-    public String test() {
-        return "test";
-    }
 
 
     @RequestMapping("register")
