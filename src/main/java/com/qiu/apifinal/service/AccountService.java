@@ -150,7 +150,8 @@ public class AccountService {
             return SaResult.error("用户名或密码错误");
         }
         StpUtil.login(account.getUid());
-        return SaResult.ok("登录成功");
+        String token = StpUtil.getTokenValue();
+        return SaResult.ok(token);
 
     }
 

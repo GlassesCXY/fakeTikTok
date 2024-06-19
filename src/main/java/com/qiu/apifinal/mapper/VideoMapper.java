@@ -1,10 +1,7 @@
 package com.qiu.apifinal.mapper;
 
 import com.qiu.apifinal.entity.Video;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -17,6 +14,12 @@ public interface VideoMapper {
     Video findById(int vid);
 
     @Insert("INSERT INTO video(name, description, uid) VALUES(#{name}, #{description}, #{uid})")
-    @Options(useGeneratedKeys = true, keyProperty = "vid")
-    void insert(Video video);
+    @Options(useGeneratedKeys = true, keyProperty = "vid", keyColumn = "vid")
+    int insert(Video video);
+
+    @Insert("INSERT INTO videolikenum(vid) VALUES(#{vid})")
+    void createLikeRow(int vid);
+
+    @Insert("INSERT INTO history(uid, vid) VALUES(#{uid}, #{vid})")
+    void insertHistory(@Param("uid") int uid, @Param("vid") int vid);
 }

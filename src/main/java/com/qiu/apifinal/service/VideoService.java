@@ -25,7 +25,15 @@ public class VideoService {
         return videoMapper.findById(vid);
     }
 
-    public void insert(Video video) {
-        videoMapper.insert(video);
+    public int insert(Video video) {
+        return videoMapper.insert(video);
+    }
+
+    public void createLikeRow(int vid){
+        videoMapper.createLikeRow(vid);
+    }
+
+    public void viewed(int vid, int uid){
+        videoMapper.insertHistory(uid, vid);
     }
 }
