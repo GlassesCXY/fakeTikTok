@@ -12,6 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 public class VideoController {
     private static final String FILE_NAME_PATTERN = "{}_{}";
@@ -48,6 +52,32 @@ public class VideoController {
         Integer uid = Integer.parseInt(StpUtil.getLoginId().toString());
         videoService.viewed(vid, uid);
         return SaResult.ok(vid+" viewed by"+uid);
+    }
+
+
+    @GetMapping("/user/videos")
+    public SaResult getVideosByUser(@RequestParam int offset,
+                                                       @RequestParam int limit) {
+        Integer uid = Integer.parseInt(StpUtil.getLoginId().toString());
+        List<Video> videos = videoService.getVideosByUser(uid, offset, limit);
+        return SaResult.data(videos);
+    }
+
+    @DeleteMapping("/video/{vid}")
+    public SaResult deleteVideo(@PathVariable int vid) {
+        Integer uid = Integer.parseInt(StpUtil.getLoginId().toString());
+        videoService.deleteVideo(uid, vid);
+        return SaResult.ok("删除成功");
+    }
+
+    @GetMapping("/videos/count")
+    public SaResult getMyVideoCount(){
+        Integer uid = Integer.parseInt(StpUtil.getLoginId().toString());
+        Integer count = videoService.getUserVideoCount(uid);
+        Map<String, Integer> map = new HashMap<>();
+        map.put("videoCount", count);
+
+        return SaResult.data(map);
     }
 
 

@@ -2,6 +2,7 @@ package com.qiu.apifinal.mapper;
 
 import com.qiu.apifinal.entity.Video;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 
@@ -22,4 +23,13 @@ public interface VideoMapper {
 
     @Insert("INSERT INTO history(uid, vid) VALUES(#{uid}, #{vid})")
     void insertHistory(@Param("uid") int uid, @Param("vid") int vid);
+
+    @Select("SELECT * FROM video WHERE uid = #{uid}")
+    List<Video> findVideosByUser(@Param("uid") int uid, RowBounds rowBounds);
+
+    @Delete("DELETE FROM video WHERE vid = #{vid} AND uid = #{uid}")
+    void deleteVideoById(@Param("vid") int vid, @Param("uid") int uid);
+
+    @Select("SELECT COUNT(*) FROM video WHERE uid = #{uid}")
+    Integer getUserVideoCount(@Param("uid") int uid);
 }

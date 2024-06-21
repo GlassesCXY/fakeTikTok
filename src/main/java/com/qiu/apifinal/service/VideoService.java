@@ -2,6 +2,7 @@ package com.qiu.apifinal.service;
 
 import com.qiu.apifinal.entity.Video;
 import com.qiu.apifinal.mapper.VideoMapper;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +36,18 @@ public class VideoService {
 
     public void viewed(int vid, int uid){
         videoMapper.insertHistory(uid, vid);
+    }
+
+    public List<Video> getVideosByUser(int uid, int offset, int limit) {
+        RowBounds rowBounds = new RowBounds(offset, limit);
+        return videoMapper.findVideosByUser(uid, rowBounds);
+    }
+
+    public void deleteVideo(int uid, int vid) {
+        videoMapper.deleteVideoById(vid, uid);
+    }
+
+    public Integer getUserVideoCount(int uid) {
+        return videoMapper.getUserVideoCount(uid);
     }
 }
