@@ -2,6 +2,9 @@ package com.qiu.apifinal.service;
 
 
 import com.qiu.apifinal.mapper.RecommendMapper;
+import com.qiu.apifinal.thrift.TTSocket;
+import com.qiu.apifinal.thrift.ThriftClient;
+import com.qiu.apifinal.thrift.ThriftClientConnectPoolFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,10 +18,31 @@ public class RecommendService {
     @Autowired
     private RecommendMapper recommendMapper;
 
+    @Autowired
+    ThriftClient thriftClient;
 
+    @Autowired
+    ThriftClientConnectPoolFactory thriftClientPool;
 
     public int getRecommend(int uid){
 
-        return recommendMapper.findMostLikedUnwatchedVideo(uid);
+        int result = 0;
+        TTSocket ttSocket = null;
+        try {
+            ttSocket = thriftClientPool.getConnect();
+//            thriftClient.open();
+
+            result = ttSocket.getService().getRecommend(uid);
+
+            thriftClientPool.returnConnection(ttSocket);
+        } catch (Exception e) {
+            e.printStackTrace();
+            thriftClientPool.invalidateObject(ttSocket);
+        } finally {
+//            thriftClient.close();
+        }
+
+
+        return result;
     }
 }
