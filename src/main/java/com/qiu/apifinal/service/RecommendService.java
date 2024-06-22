@@ -37,7 +37,11 @@ public class RecommendService {
             thriftClientPool.returnConnection(ttSocket);
         } catch (Exception e) {
             e.printStackTrace();
-            thriftClientPool.invalidateObject(ttSocket);
+            if (ttSocket != null) {
+                thriftClientPool.invalidateObject(ttSocket);
+            }
+            // 当远程调用失败时，使用本地mapper获取推荐结果
+            result = recommendMapper.findMostLikedUnwatchedVideo(uid);
         } finally {
 //            thriftClient.close();
         }

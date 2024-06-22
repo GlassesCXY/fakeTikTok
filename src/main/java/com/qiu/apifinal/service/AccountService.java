@@ -151,7 +151,7 @@ public class AccountService {
         }
         StpUtil.login(account.getUid());
         String token = StpUtil.getTokenValue();
-        return SaResult.ok(token);
+        return SaResult.ok("登录成功");
 
     }
 

@@ -25,7 +25,7 @@ public class VideoController {
     VideoService videoService;
 
 
-    @PostMapping("/upload")
+    @PostMapping("/videos/video/upload")
     public ResponseEntity<String> uploadFile(
             @RequestParam("file") MultipartFile file,
             @RequestParam("des") String description
@@ -41,13 +41,13 @@ public class VideoController {
 
 
 
-    @PostMapping("/getUrl")
+    @PostMapping("/videos/video/getUrl")
     public SaResult getUrl(@RequestParam("vid") Integer vid) {
         Video video = videoService.findById(vid);
         return SaResult.data(minioUtils.getObjectUrl("video", String.valueOf(video.getVid())));
     }
 
-    @PostMapping("/view")
+    @PostMapping("/videos/video/view")
     public SaResult viewVideo(@RequestParam("vid") Integer vid){
         Integer uid = Integer.parseInt(StpUtil.getLoginId().toString());
         videoService.viewed(vid, uid);
@@ -63,7 +63,7 @@ public class VideoController {
         return SaResult.data(videos);
     }
 
-    @DeleteMapping("/video/{vid}")
+    @DeleteMapping("/videos/video/{vid}")
     public SaResult deleteVideo(@PathVariable int vid) {
         Integer uid = Integer.parseInt(StpUtil.getLoginId().toString());
         videoService.deleteVideo(uid, vid);
